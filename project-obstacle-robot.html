@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Obstacle Detection Robot — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=Noto+Sans+Arabic:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="project-detail.css" />
+</head>
+<body>
+
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div class="grid-bg"></div>
+
+  <div class="wrapper">
+
+    <!-- NAV -->
+    <nav>
+      <a href="index.html" class="nav-logo">mikecode<span>101</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#blog">Blog</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="nav-status">
+          <span class="status-dot"></span>
+          <span>Student / Learning</span>
+        </div>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <!-- MOBILE DRAWER -->
+    <div class="mobile-menu" id="mobile-menu">
+      <ul>
+        <li><a href="index.html#about"    data-mob="1">About</a></li>
+        <li><a href="index.html#projects" data-mob="1">Projects</a></li>
+        <li><a href="index.html#blog"     data-mob="1">Blog</a></li>
+        <li><a href="index.html#contact"  data-mob="1">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- DETAIL HERO -->
+    <section class="detail-hero">
+      <div class="container">
+        <a href="index.html#projects" class="detail-back"> Back to Projects</a>
+        <div class="detail-num">Project 01</div>
+        <h1 class="detail-title">Obstacle Detection<br /><span class="accent">Robot</span></h1>
+        <div class="detail-tags">
+          <span class="detail-tag">PICO / RP2040</span>
+          <span class="detail-tag">MICROPYTHON</span>
+          <span class="detail-tag">Sensors</span>
+          <span class="detail-tag">Robotics</span>
+          <span class="detail-tag">PWM</span>
+          <span class="detail-tag">Ultrasonic</span>
+          <span class="detail-tag">COMPETITION</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- DETAIL BODY -->
+    <div class="detail-body">
+      <div class="container">
+        <div class="detail-grid">
+
+          <!-- MAIN CONTENT -->
+          <div class="detail-content">
+
+            <!-- Project image -->
+            <div class="detail-image-wrap" style="margin-bottom: 40px;">
+              <img src="resources/UA-robot.jpg" alt="Obstacle Detection Robot" />
+              <div class="detail-image-caption">// UA-robot.jpg</div>
+            </div>
+
+            <h2>Overview</h2>
+            <p>This autonomous mobile robot was engineered for a high stakes competition where scoring was based on the number of obstacles successfully avoided within a 5-minute window.</p>
+            <p>As a team of three, we collaborated on every stage of development. I took a "full-stack" hardware approach contributing to the mechanical assembly, sensor integration, and the MicroPython logic to ensure I understood how the hardware and software interfaced. We moved away from standard Arduino setups to use the Raspberry Pi Pico, leveraging its dual-core power and MicroPython's rapid prototyping capabilities to fine-tune our avoidance algorithms on the fly.</p>
+
+            <h2>How It Works</h2>
+            <p>The control logic operates as a Reactive State Machine using three HC-SR04 sensors to create a "threat map." The firmware polls the Front, Left, and Right sensors sequentially, calculating distances via microsecond pulse timing.</p>
+            <p>Movement is handled through a pulse-and-pause execution model. The robot moves in discrete 100ms increments, allowing the sensors to clear echoes and avoid interference. The logic follows a hierarchical priority:</br>-Panic Mode: If any sensor detects an object under $6cm$, the robot immediately executes a multi-pulse backward escape.</br>-Decision Logic: If the front path is blocked &lt; 12cm, the robot compares left and right clearings to pick the optimal turn direction.</br>-Lateral Correction: Side sensors &lt; 14cm trigger micro-adjustments to keep the robot centered in corridors.</p>
+           
+
+            <h2>Key Features</h2>
+            <ul>
+              <li>Front-facing HC-SR04 ultrasonic sensor with echo pulse capture via hardware timer</li>
+              <li>Pulse-Based Movement: Custom movement driver using 0.1s bursts to improve sensor accuracy and prevent overshooting obstacles.</li>
+              <li>Priority State Machine: Logic tiers (Panic/Block/Side) ensure the robot prioritizes the most immediate threat.</li>
+              <li>Optimal Path Selection: pick_turn algorithm that compares spatial data to decide between left or right escape maneuvers.</li>
+              <li>Real-time Debugging:Integrated DEBUG mode via Serial REPL to monitor "Front/Left/Right" distances during live runs.</li>
+            </ul>
+
+            <h2>Challenges &amp; Solutions</h2>
+            <p>The primary challenge we encountered was the robot’s inability to stop in time, leading to collisions with obstacles despite successful detection. This was caused by the combination of mechanical inertia and the processing latency of MicroPython when polling three separate ultrasonic sensors. To solve this, we moved away from continuous movement and integrated a custom pulse-pause execution system.</p>
+            <p>To solve this,we developed on the spot a custom movement pulsing system bearly noticible to the humaneye.We eliminated the momentum that was carrying the robot into its blind zone. This approach ensured that every sensor reading was taken while the robot was perfectly still, providing the stable data necessary to maintain a 6cm "Panic" safety threshold and successfully navigate the competition arena without impact.</p>
+
+            <h2>What I Learned</h2>
+            <p>This project was a masterclass in system integration and rapid prototyping. As part of a three person team, I contributed to everything from the H-bridge motor wiring to the MicroPython logic.</br>I learned how to manage sensor cross-talk a major hurdle when using three ultrasonic modules. By implementing a sequential polling routine and a "pulse-pause" movement model, we were able to get reliable data even in a crowded arena. This experience taught me that in competitive robotics, a simple, robust state machine often outperforms complex algorithms that can't handle real world noise.</p>
+          </div>
+
+          <!-- SIDEBAR -->
+          <aside class="detail-sidebar">
+            <div class="detail-sidebar-block">
+              <h3>Project Info</h3>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Status</span>
+                <span class="detail-status-badge">Completed</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Category</span>
+                <span class="detail-meta-val">Robotics</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Platform</span>
+                <span class="detail-meta-val">Raspberry Pi Pico (RP2040)</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Language</span>
+                <span class="detail-meta-val">MicroPython</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Sensors</span>
+                <span class="detail-meta-val">HC-SR04 Ultrasonic</span>
+              </div>
+            </div>
+
+            <div class="detail-sidebar-block">
+              <h3>Tech Stack</h3>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Firmware</span>
+                <span class="detail-meta-val">MicroPython (RP2040 Port)</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Toolchain</span>
+                <span class="detail-meta-val">Thonny</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Flash</span>
+                <span class="detail-meta-val">Thonny</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Debug</span>
+                <span class="detail-meta-val">REPL / Serial Monitor</span>
+              </div>
+            </div>
+
+            <div class="detail-sidebar-block">
+              <h3>Navigate Projects</h3>
+              <div class="detail-meta-row" style="flex-direction:column; align-items:flex-start; gap:10px;">
+                <a href="project-rpi-hid.html" class="project-link" style="font-size:.78rem;">Raspberry Pi Pico HID</a>
+                <a href="project-esp32-bruce.html" class="project-link" style="font-size:.78rem;">ESP32 Bruce Firmware</a>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <div class="footer-inner">
+          <span class="footer-copy">Copyright 2026 © All rights reserved — <a href="index.html">Mickel Sassine</a></span>
+          <a href="index.html#projects" class="footer-back-top">← All Projects</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+<script>
+  // Cursor
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    dot.style.left=mx+'px'; dot.style.top=my+'px';
+    dot.style.opacity='1'; ring.style.opacity='0.5';
+  });
+  (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+
+  // Hamburger
+  const hamburger = document.getElementById('nav-hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open', open);
+  });
+  mobileMenu.querySelectorAll('a[data-mob]').forEach(a => {
+    a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    });
+  });
+
+  // Hover cursor effect
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='var(--accent2)';dot.style.background='var(--accent2)';});
+    el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='var(--accent)';dot.style.background='var(--accent)';});
+  });
+
+  // Reveal
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+</script>
+
+</body>
+</html>

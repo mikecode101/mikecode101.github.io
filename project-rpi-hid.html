@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raspberry Pi Pico HID — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=Noto+Sans+Arabic:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="project-detail.css" />
+</head>
+<body>
+
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div class="grid-bg"></div>
+
+  <div class="wrapper">
+
+    <!-- NAV -->
+    <nav>
+      <a href="index.html" class="nav-logo">mikecode<span>101</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#blog">Blog</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="nav-status">
+          <span class="status-dot"></span>
+          <span>Student / Learning</span>
+        </div>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <!-- MOBILE DRAWER -->
+    <div class="mobile-menu" id="mobile-menu">
+      <ul>
+        <li><a href="index.html#about"    data-mob="1">About</a></li>
+        <li><a href="index.html#projects" data-mob="1">Projects</a></li>
+        <li><a href="index.html#blog"     data-mob="1">Blog</a></li>
+        <li><a href="index.html#contact"  data-mob="1">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- DETAIL HERO -->
+    <section class="detail-hero">
+      <div class="container">
+        <a href="index.html#projects" class="detail-back"> Back to Projects</a>
+        <div class="detail-num">Project 02</div>
+        <h1 class="detail-title">Raspberry Pi<br /><span class="accent">Pico HID</span></h1>
+        <div class="detail-tags">
+          <span class="detail-tag">RP2040</span>
+          <span class="detail-tag">MicroPython</span>
+          <span class="detail-tag">USB HID</span>
+          <span class="detail-tag">Security</span>
+          <span class="detail-tag">Automation</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- DETAIL BODY -->
+    <div class="detail-body">
+      <div class="container">
+        <div class="detail-grid">
+
+          <!-- MAIN CONTENT -->
+          <div class="detail-content">
+
+            <!-- Project image -->
+            <div class="detail-image-wrap" style="margin-bottom: 40px;">
+              <img src="resources/HID.jpg" alt="HID" />
+              <div class="detail-image-caption">// HID.jpg</div>
+            </div>
+
+
+            <h2>Overview</h2>
+            <p>This project transforms a Raspberry Pi Pico into a high-speed, programmable USB Human Interface Device (HID) capable of executing automated keystroke payloads. Built using MicroPython, the device acts as a hardware based automation tool that can impersonate a keyboard to deliver pre configured script payload the moment it is connected to a host machine.</p>
+            <p>Built for security research, red-team exercises, and legitimate administrative automation.By leveraging the RP2040’s native USB support, the device operates entirely within the USB HID specification no special software is needed on the target machine. If it has a USB port, it works.</p>
+
+            <h2>How It Works</h2>
+            <p>The core of the system is a custom Ducky Script parser built in MicroPython on the asyncio framework. When plugged in, the Pico initializes as a standard USB Keyboard using the adafruit_hid library. It then reads a payload.dd text file from its internal flash memory. Unlike simpler parsers, this implementation is non-blocking; it processes commands like STRING, DELAY, and GUI r while maintaining system responsiveness. The script also features a 5-second safety delay upon startup, allowing the developer time to intercept the execution if necessary.</p>
+
+            <h2>Key Features</h2>
+            <ul>
+              <li>Asynchronous Parser: Uses asyncio to handle complex timing and command execution without hanging the system.</li>
+              <li>Ducky Script Compatibility: Supports standard commands including DELAY, STRING, and multi-key combos (e.g., GUI r).</li>
+              <li>Comprehensive Key Mapping: A full dictionary mapping for Windows, Shift, Alt, and Control modifiers.</li>
+              <li>Automated Repeat Logic: Includes a REPEAT command that allows the previous instruction to be executed multiple times efficiently.</li>
+              <li>Ducky Script–compatible parser for compatibility with existing payloads</li>
+              <li>Onboard LED status indicator with configurable blink patterns</li>
+              <li>Onboard Flash Execution: Payloads are stored as simple .dd or .txt files directly on the Pico for easy "drag-and-drop" updates.</li>
+            </ul>
+
+            <h2>Payload System</h2>
+            <p>Payloads are plain text files (.dd or .txt) containing a sequential list of instructions that the Pico parses in real time. The system utilizes a non blocking asynchronous parser built with asyncio, allowing the device to handle complex timing without freezing the HID stack.</p>
+            <p>The parser interprets several core primitives:</br>-STRING / STRINGLN: Types out the provided text or text followed by a newline.</br>-DELAY: Pauses execution for a specific number of milliseconds</br>-REPEAT: A specialized command that re-executes the previous line a defined number of times.</br>-Modifier Keys: Supports system level commands like GUI, CTRL, ALT, and SHIFT by mapping them to the adafruit_hid Keycode library.</br>-DEFAULT_DELAY: Sets a global wait time between every line of the script to ensure the target OS can keep up with the injection speed.</p>
+            <p>Unlike standard linear scripts, this implementation is Timing aware. By using await asyncio.sleep(), the Pico can manage the USB connection state while waiting for the next command, resulting in much higher reliability when executing multi step payloads like reverse shells.</p>
+
+            <h2>Security Research Use Cases</h2>
+            <p>The device has been tested against Windows, macOS, and Linux targets. Common red-team scenarios include opening a reverse shell via PowerShell in under three seconds, exfiltrating clipboard contents, and disabling security tooling — all without triggering kernel-level USB filtering on default OS configurations.</p>
+            <p>The key lesson from this project: USB HID is implicitly trusted by every major operating system. Physical access via a USB port is, by default, full access.</p>
+          </div>
+
+          <!-- SIDEBAR -->
+          <aside class="detail-sidebar">
+            <div class="detail-sidebar-block">
+              <h3>Project Info</h3>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Status</span>
+                <span class="detail-status-badge">Completed</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Category</span>
+                <span class="detail-meta-val">Security</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Platform</span>
+                <span class="detail-meta-val">RP2040</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Language</span>
+                <span class="detail-meta-val">MicroPython</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Protocol</span>
+                <span class="detail-meta-val">USB HID 1.1</span>
+              </div>
+            </div>
+
+            <div class="detail-sidebar-block">
+              <h3>Tech Stack</h3>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">USB Stack</span>
+                <span class="detail-meta-val">TinyUSB</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Runtime</span>
+                <span class="detail-meta-val">MicroPython</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Flash</span>
+                <span class="detail-meta-val">2MB onboard</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Toolchain</span>
+                <span class="detail-meta-val">Thonny IDE</span>
+              </div>
+            </div>
+
+            <div class="detail-sidebar-block">
+              <h3>Navigate Projects</h3>
+              <div class="detail-meta-row" style="flex-direction:column; align-items:flex-start; gap:10px;">
+                <a href="project-obstacle-robot.html" class="project-link" style="font-size:.78rem;">Obstacle Detection Robot</a>
+                <a href="project-esp32-bruce.html" class="project-link" style="font-size:.78rem;">ESP32 Bruce Firmware</a>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <div class="footer-inner">
+          <span class="footer-copy">Copyright 2026 © All rights reserved — <a href="index.html">Mickel Sassine</a></span>
+          <a href="index.html#projects" class="footer-back-top">← All Projects</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+<script>
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    dot.style.left=mx+'px'; dot.style.top=my+'px';
+    dot.style.opacity='1'; ring.style.opacity='0.5';
+  });
+  (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+
+  const hamburger = document.getElementById('nav-hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open', open);
+  });
+  mobileMenu.querySelectorAll('a[data-mob]').forEach(a => {
+    a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    });
+  });
+
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='var(--accent2)';dot.style.background='var(--accent2)';});
+    el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='var(--accent)';dot.style.background='var(--accent)';});
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mickel Sassine — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { opacity: 0; transition: opacity 0.15s ease; }
+    body.fonts-ready { opacity: 1; }
+  </style>
+  <script>
+    document.fonts.ready.then(function() { document.body.classList.add('fonts-ready'); });
+    setTimeout(function() { document.body.classList.add('fonts-ready'); }, 800);
+  </script>
+</head>
+<body>
+
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div class="grid-bg"></div>
+
+  <div class="wrapper">
+
+    <!-- NAV -->
+    <nav>
+      <a href="#" class="nav-logo">mikecode<span>101</span></a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#blog">Blog</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="nav-status">
+          <span class="status-dot"></span>
+          <span>Student / Learning</span>
+        </div>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <!-- MOBILE DRAWER -->
+    <div class="mobile-menu" id="mobile-menu">
+      <ul>
+        <li><a href="#about"    data-mob="1">About</a></li>
+        <li><a href="#projects" data-mob="1">Projects</a></li>
+        <li><a href="#blog"     data-mob="1">Blog</a></li>
+        <li><a href="#contact"  data-mob="1">Contact</a></li>
+      </ul>
+      <div class="mobile-menu-bottom">
+        <div class="mobile-status">
+          <span class="status-dot"></span>
+          <span>Student / Learning</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO -->
+    <section id="hero">
+      <svg class="hero-circuit" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="200" cy="200" r="180" stroke="white" stroke-width="0.5"/>
+        <circle cx="200" cy="200" r="120" stroke="white" stroke-width="0.5"/>
+        <circle cx="200" cy="200" r="60" stroke="white" stroke-width="0.5"/>
+        <line x1="20" y1="200" x2="380" y2="200" stroke="white" stroke-width="0.5"/>
+        <line x1="200" y1="20" x2="200" y2="380" stroke="white" stroke-width="0.5"/>
+        <line x1="72" y1="72" x2="328" y2="328" stroke="white" stroke-width="0.5"/>
+        <line x1="328" y1="72" x2="72" y2="328" stroke="white" stroke-width="0.5"/>
+        <rect x="190" y="190" width="20" height="20" stroke="white" stroke-width="1"/>
+        <rect x="155" y="155" width="90" height="90" stroke="white" stroke-width="0.5" stroke-dasharray="4 4"/>
+        <circle cx="200" cy="200" r="4" fill="white"/>
+        <circle cx="20" cy="200" r="4" fill="white"/><circle cx="380" cy="200" r="4" fill="white"/>
+        <circle cx="200" cy="20" r="4" fill="white"/><circle cx="200" cy="380" r="4" fill="white"/>
+        <path d="M80 200 L80 160 L120 160" stroke="white" stroke-width="0.5"/>
+        <path d="M320 200 L320 240 L280 240" stroke="white" stroke-width="0.5"/>
+        <path d="M200 80 L240 80 L240 120" stroke="white" stroke-width="0.5"/>
+        <rect x="114" y="154" width="12" height="12" stroke="white" stroke-width="0.5"/>
+        <rect x="274" y="234" width="12" height="12" stroke="white" stroke-width="0.5"/>
+        <rect x="234" y="114" width="12" height="12" stroke="white" stroke-width="0.5"/>
+      </svg>
+      <div class="container">
+        <div class="hero-badge" id="hero-badge"></div>
+        <h1 class="hero-name">MICKEL<br /><span class="accent">SASSINE</span></h1>
+        <p class="hero-bio">I'm a Lebanon based maker focused on embedded systems, wireless security and creative problem-solving. I build things that blink, transmit, and sometimes misbehave  on purpose.</p>
+        <div class="hero-ctas">
+          <a href="#projects" class="btn-primary">View Projects</a>
+          <a href="#contact"  class="btn-ghost">Get in Touch</a>
+        </div>
+      </div>
+      <div class="scroll-hint">
+        <div class="line"></div>
+        <span>Scroll</span>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="container">
+        <div class="section-label reveal"><h2>About Me</h2></div>
+        <div class="about-grid">
+          <div class="about-text reveal">
+            <p>I'm a student and maker based in Beirut. I focus on embedded systems, wireless protocols, and the space where hardware meets security. I build real things: bare-metal firmware, RF tools, and open-source projects that people actually use.</p>
+            <p>I spend a lot of hours buried in datasheets or debugging with a logic analyzer. I enjoy reverse engineering gadgets and building autonomous robotics. If it has a signal or a low level protocol, I want to understand how it works and how to make it do more.</p>
+            <p>Outside the lab, I've worked as a technical instructor for rappelling and caving. It taught me to stay calm and solve problems when things get difficult. I'm just here to build cool stuff and see what happens when you push a system to its limit.</p>
+            <div class="skill-tags">
+              <span class="skill-tag">ESP32</span><span class="skill-tag">STM32</span><span class="skill-tag">RTOS</span>
+              <span class="skill-tag">C / C++</span><span class="skill-tag">Python</span>
+              <span class="skill-tag">Linux</span><span class="skill-tag">JTAG</span>
+              <span class="skill-tag">Security</span><span class="skill-tag">Pentesting</span>
+            </div>
+          </div>
+          <div class="terminal reveal" style="transition-delay:.15s">
+            <div class="terminal-bar">
+              <span class="t-dot r"></span><span class="t-dot y"></span><span class="t-dot g"></span>
+              <span class="terminal-title">~/about.sh</span>
+            </div>
+            <div class="terminal-body">
+              <div class="terminal-line"><span class="t-prompt">$ </span><span class="t-cmd">whoami</span></div>
+              <div class="terminal-line t-out hi">mickelsassine</div><br/>
+              <div class="terminal-line"><span class="t-prompt">$ </span><span class="t-cmd">cat skills.txt</span></div>
+              <div class="terminal-line t-out">→ Security / Pentesting</div>
+              <div class="terminal-line t-out">→ RF / Wireless Protocols</div>
+              <div class="terminal-line t-out">→ IoT Architecture</div><br/>
+              <div class="terminal-line"><span class="t-prompt">$ </span><span class="t-cmd">echo $STATUS</span></div>
+              <div class="terminal-line t-out hi">status=student_learning</div><br/>
+              <div class="terminal-line"><span class="t-prompt">$ </span><span class="t-cursor"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="container">
+        <div class="section-label reveal"><h2>Projects</h2></div>
+        <div class="projects-grid">
+          <div class="project-card reveal" onclick="window.location.href='project-obstacle-robot.html'" style="cursor:pointer">
+            <div class="project-num">01</div>
+            <span class="project-icon">🤖</span>
+            <div class="project-name">Obstacle Detection Robot</div>
+            <p class="project-desc">An autonomous robot platform equipped with ultrasonic and IR sensors for real-time obstacle detection and avoidance. Custom firmware on a bare-metal microcontroller with PID-tuned motor control.</p>
+            <div class="project-tags"><span class="project-tag">Embedded C</span><span class="project-tag">Sensors</span><span class="project-tag">Robotics</span><span class="project-tag">PWM</span></div>
+            <a href="project-obstacle-robot.html" class="project-link">View Project</a>
+          </div>
+          <div class="project-card reveal" style="transition-delay:.1s;cursor:pointer" onclick="window.location.href='project-rpi-hid.html'">
+            <div class="project-num">02</div>
+            <span class="project-icon">🖱️</span>
+            <div class="project-name">Raspberry Pi Pico HID</div>
+            <p class="project-desc">A USB Human Interface Device built on the RP2040, emulating keyboard and mouse inputs for automation and security research. Fully scriptable payload injection via MicroPython.</p>
+            <div class="project-tags"><span class="project-tag">RP2040</span><span class="project-tag">MicroPython</span><span class="project-tag">USB HID</span><span class="project-tag">Security</span></div>
+            <a href="project-rpi-hid.html" class="project-link">View Project</a>
+          </div>
+          <div class="project-card reveal" style="transition-delay:.15s;cursor:pointer" onclick="window.location.href='project-esp32-bruce.html'">
+            <div class="project-num">03</div>
+            <span class="project-icon">📡</span>
+            <div class="project-name">ESP32 Bruce Firmware</div>
+            <p class="project-desc">Custom open-source firmware for the ESP32 inspired by the Bruce project — featuring Wi-Fi attacks, BLE tools, IR blasting, RFID, and a hacker-friendly menu interface on a small screen.</p>
+            <div class="project-tags"><span class="project-tag">ESP32</span><span class="project-tag">C++</span><span class="project-tag">Wi-Fi</span><span class="project-tag">BLE</span><span class="project-tag">RF</span></div>
+            <a href="project-esp32-bruce.html" class="project-link">View Project</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOG -->
+    <section id="blog">
+      <div class="container">
+        <div class="section-label reveal"><h2>Latest Posts</h2></div>
+        <div class="blog-soon reveal">
+          <div class="blog-soon-inner">
+            <span class="blog-soon-label">// coming_soon</span>
+            <p class="blog-soon-text">Posts are being written.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-label reveal"><h2>Contact</h2></div>
+        <div class="contact-grid">
+          <div class="contact-info reveal">
+            <h3>Let's build<br /><em>something</em><br />together.</h3>
+            <p>Have a project in mind, a weird hardware idea, or just want to talk embedded systems? My inbox is open.</p>
+            <div class="social-links">
+              <a href="https://github.com/mikecode101" class="social-link">GitHub</a>
+              <a href="https://x.com/mickelsass" class="social-link">Twitter / X</a>
+              <a href="https://t.me/MickelSass" class="social-link">Telegram</a>
+              <a href="https://instagram.com/mickel.sassine" class="social-link">Instagram</a>
+              <a href="mailto:mickel.sg.sassine@proton.me" class="social-link">Email</a>
+            </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <div class="footer-inner">
+          <span class="footer-copy">Copyright 2026 © All rights reserved — <a href="#">Mickel Sassine</a> - <a href="mailto:mickel.sg.sassine@proton.me">mickel.sg.sassine@proton.me</a></span>
+          <a href="#hero" class="footer-back-top">↑ Back to top</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+<script src="script.js" defer></script>
+
+</body>
+</html>

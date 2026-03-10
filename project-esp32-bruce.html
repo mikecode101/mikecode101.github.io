@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ESP32 Bruce Firmware — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=Noto+Sans+Arabic:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="project-detail.css" />
+</head>
+<body>
+
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div class="grid-bg"></div>
+
+  <div class="wrapper">
+
+    <!-- NAV -->
+    <nav>
+      <a href="index.html" class="nav-logo">mikecode<span>101</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#blog">Blog</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="nav-status">
+          <span class="status-dot"></span>
+          <span>Student / Learning</span>
+        </div>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <!-- MOBILE DRAWER -->
+    <div class="mobile-menu" id="mobile-menu">
+      <ul>
+        <li><a href="index.html#about"    data-mob="1">About</a></li>
+        <li><a href="index.html#projects" data-mob="1">Projects</a></li>
+        <li><a href="index.html#blog"     data-mob="1">Blog</a></li>
+        <li><a href="index.html#contact"  data-mob="1">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- DETAIL HERO -->
+    <section class="detail-hero">
+      <div class="container">
+        <a href="index.html#projects" class="detail-back"> Back to Projects</a>
+        <div class="detail-num">Project 03</div>
+        <h1 class="detail-title">ESP32 Bruce<br /><span class="accent">Firmware</span></h1>
+        <div class="detail-tags">
+          <span class="detail-tag">ESP32</span>
+          <span class="detail-tag">C++</span>
+          <span class="detail-tag">Wi-Fi</span>
+          <span class="detail-tag">BLE</span>
+          <span class="detail-tag">RF</span>
+          <span class="detail-tag">IR</span>
+          <span class="detail-tag">RFID</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- DETAIL BODY -->
+    <div class="detail-body">
+      <div class="container">
+        <div class="detail-grid">
+
+          <!-- MAIN CONTENT -->
+          <div class="detail-content">
+
+            <!-- Project image -->
+            <div class="detail-image-wrap" style="margin-bottom: 40px;">
+              <img src="resources/Bruce.jpg" alt="Bruce" />
+              <div class="detail-image-caption">// Bruce.jpg</div>
+            </div>
+
+            <h2>Overview</h2>
+            <p>Bruce is an open source, offensive security firmware that transforms the sub $10 ESP32-2432S028 Cheap Yellow Display (CYD) into a powerful "Swiss Army knife" for wireless research and penetration testing. This custom build provides a handheld environment comparable to commercial tools like the Flipper Zero, featuring a highly optimized UI tailored for the CYD’s 2.8" touchscreen and integrated GPIO.</p>
+            <p>The goal was to create a device that is open, hackable, and capable of handling everything from Wi-Fi deauthentication and IR remote cloning to BLE HID attacks in a single, portable binary. By leveraging the ESP32’s dual-core power, the project demonstrates how affordable consumer hardware can be repurposed into a professional grade research tool.</p>
+
+            <h2>Architecture</h2>
+            <p>The project is built on a modular abstraction layer designed to maximize the ESP32’s performance while maintaining a responsive user interface.</p>
+            <p>-FreeRTOS Kernel: The firmware operates on a FreeRTOS driven kernel, utilizing a Symmetric Multiprocessing (SMP) model. This allows for deterministic multitasking, ensuring that time critical wireless operations do not interfere with the UI event loop.</br>-Dual-Core Task Pinning: To prevent "UI lag" during intensive network attacks, the system pins Radio Operations (Core 0) and UI/Rendering (Core 1) to separate Xtensa cores. This isolation ensures the 2.8 touchscreen remains fluid even while the device is actively deauthenticating WiFi clients or sniffing packets.</br>-NimBLE Stack Optimization: Unlike standard builds that use the memory heavy Bluedroid stack, Bruce utilizes NimBLE (esp-nimble-cpp). This reduces RAM and Flash consumption by approximately 40%, providing the necessary overhead to run the JavaScript interpreter and large attack payloads simultaneously.</br>-JavaScript Runtime (mquickjs): An integrated MicroQuickJS (mquickjs) interpreter provides a sandboxed environment for executing custom scripts. This allows for complex logic to be written in JS and executed directly from the SD card without requiring a full firmware recompile.</br>-Hybrid Storage Architecture:LittleFS (On-Flash): Used for core system assets, credentials, and configuration files requiring high speed, wear leveled access, and SD Card (SPI-Driven): Dedicated to high-volume data exfiltration, including WPA/WPA2 handshake captures (EAPOL), PCAP logs, and the JavaScript tool library.</p>
+
+            <h2>Modules &amp; Capabilities</h2>
+            <ul>
+              <li><strong>Wi-Fi:</strong> Deauth attacks, beacon flooding, Evil Twin AP, packet sniffer with PCAP export to SD card and Pwnagotchi-compatible handshake collection (EAPOL).</li>
+              <li><strong>BLE:</strong> Device scanner, Bad BLE (DuckyScripts via Bluetooth HID emulation), advertisement spoofer, Apple/Samsung notification spam</li>
+              <li><strong>IR:</strong> Universal remote with signal capture, replay, and a growing community database(requires external IR module)</li>
+              <li><strong>RFID:</strong> NFC/RFID Support via PN532: Interfaces with external modules to read, clone, and emulate NFC tags and Amiibos</li>
+              <li><strong>Sub-GHz:</strong> OOK/ASK signal capture and replay (requires external CC1101 module)</li>
+              <li><strong>Tools:</strong> UART/I2C/SPI terminal, GPIO tester, WiFi password cracker (PMKID), LED control</li>
+            </ul>
+
+            <h2>Custom Additions</h2>
+            <p>Beyond the base Bruce feature set, this build adds a scripting engine that lets users write simple automation scripts stored on the SD card. Scripts can chain tool actions for instance, scan for a Wi-Fi network, deauth it, spin up an Evil Twin, and log credentials all from a single three line script file.</p>
+            <p>A web-based config UI is also served over a local AP when the device boots in "config mode", making it possible to update settings, upload scripts, and view logs without a serial connection.</p>
+
+            <h2>Open Source Contributions</h2>
+            <p>Several modules developed for this project have been upstreamed to the main Bruce repository, including the improved IR database parser (Bruce now supports custom IR signals through LittleFS or SD storage using the standard .ir file format popularized by the Flipper Zero community), the PCAP export feature, and the BLE advertisement spoofing module. The scripting engine is currently in review for upstream merge.</p>
+          </div>
+
+          <!-- SIDEBAR -->
+          <aside class="detail-sidebar">
+            <div class="detail-sidebar-block">
+              <h3>Project Info</h3>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Status</span>
+                <span class="detail-status-badge">Completed</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Category</span>
+                <span class="detail-meta-val">Security / RF</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Platform</span>
+                <span class="detail-meta-val">ESP32 / ESP32-S3</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Language</span>
+                <span class="detail-meta-val">C++ / JavaScript</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Open Source</span>
+                <span class="detail-meta-val">Yes — AGPL-3.0 License</span>
+              </div>
+            </div>
+
+            <div class="detail-sidebar-block">
+              <h3>Tech Stack</h3>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Framework</span>
+                <span class="detail-meta-val">Arduino / ESP-IDF</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Build</span>
+                <span class="detail-meta-val">PlatformIO / ESP-NimBLE</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Display</span>
+                <span class="detail-meta-val">TFT_eSPI</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="detail-meta-key">Storage</span>
+                <span class="detail-meta-val">SD + LittleFS</span>
+              </div>
+            </div>
+
+            <div class="detail-sidebar-block">
+              <h3>Navigate Projects</h3>
+              <div class="detail-meta-row" style="flex-direction:column; align-items:flex-start; gap:10px;">
+                <a href="project-obstacle-robot.html" class="project-link" style="font-size:.78rem;">Obstacle Detection Robot</a>
+                <a href="project-rpi-hid.html" class="project-link" style="font-size:.78rem;">Raspberry Pi Pico HID</a>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <div class="footer-inner">
+          <span class="footer-copy">Copyright 2026 © All rights reserved — <a href="index.html">Mickel Sassine</a></span>
+          <a href="index.html#projects" class="footer-back-top">← All Projects</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+<script>
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    dot.style.left=mx+'px'; dot.style.top=my+'px';
+    dot.style.opacity='1'; ring.style.opacity='0.5';
+  });
+  (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+
+  const hamburger = document.getElementById('nav-hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open', open);
+  });
+  mobileMenu.querySelectorAll('a[data-mob]').forEach(a => {
+    a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    });
+  });
+
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='var(--accent2)';dot.style.background='var(--accent2)';});
+    el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='var(--accent)';dot.style.background='var(--accent)';});
+  });
+</script>
+
+</body>
+</html>
